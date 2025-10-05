@@ -26,9 +26,7 @@ jobs:
         # The specific key for this cache
         key: cache-e19d99f
 
-    - name: Echo cache hit/miss result
-      # This step must have the exact name you specified
-      name: prime-cache-e19d99f
+    - name: prime-cache-e19d99f
       run: echo "The cache-hit variable was ${{ steps.cache-npm.outputs.cache-hit }}"
 
     - name: Install dependencies
