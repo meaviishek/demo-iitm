@@ -1,0 +1,41 @@
+name: CI with Caching
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Cache Node modules
+      id: cache-npm
+      uses: actions/cache@v4
+      with:
+        # The path to cache, node_modules folder
+        path: node_modules
+        # The specific key for this cache
+        key: cache-e19d99f
+
+    - name: Echo cache hit/miss result
+      # This step must have the exact name you specified
+      name: prime-cache-e19d99f
+      run: echo "The cache-hit variable was ${{ steps.cache-npm.outputs.cache-hit }}"
+
+    - name: Install dependencies
+      # This step only runs if the cache was not restored
+      if: steps.cache-npm.outputs.cache-hit != 'true'
+      run: npm install
+
+    - name: Build project
+      # Example build step that runs after dependencies are handled
+      run: echo "Running build command..." # Replace with your actual build command
